@@ -1,26 +1,120 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="container">
+  <Header title="Task Tracker" @toggle-add-task="toggleAddTask" :toggleButton="showAddTask"/>
+  <div v-show="showAddTask">
+  <AddTask @add-task= "addTask"/>
+  </div>
+  <Tasks :tasks = "tasks" @delete-task = "deleteTask" @toggle-reminder = "toggleReminder"/>
+  <!-- @delete-task = "deleteTask" -->
+  </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+import Header from "./components/Header.vue";
+import Tasks from "./components/Tasks.vue";
+import AddTask from "./components/AddTask.vue";
 export default {
-  name: "App",
-  components: {
-    HelloWorld,
+  name: "App",  
+  components: {  
+    Header,
+    Tasks,
+    AddTask
   },
+  data (){
+    return {
+      tasks : [],
+      showAddTask:false,
+    }    
+  },
+  methods:{
+    deleteTask (id){
+      // console.log("task", id)
+      this.tasks = this.tasks.filter(task=>task.id !== id)
+    },
+    //  debugger
+    toggleReminder(id){       
+      this.tasks = this.tasks.map(task=>{
+        if(task.id === id){      
+      return  {...task, reminder: !task.reminder} ;            
+        }
+        else{
+          return task;
+        }       
+      })
+    },
+    addTask(newTask){      
+      this.tasks = [...this.tasks, newTask]
+      console.log(newTask)
+    },
+    toggleAddTask(){    
+      this.showAddTask=!this.showAddTask
+    }
+  },
+  created() {
+      this.tasks = [
+        {
+         id : 1,
+         text : 'Doctors Appointment',
+         day: 'july 2nd at 2.30pm',
+         reminder: true,
+        },
+        {
+         id : 2,
+         text : 'Meeting at school',
+         day: 'aug 9th at 8.30am',
+         reminder: false,
+        },
+        {
+         id : 3,
+         text : 'Grocery Shopping',
+         day: 'july 12th at 6.30pm',
+         reminder: true,
+        }
+      ]
+    }
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+}
+.container {
+  max-width: 500px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+}
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+.btn:focus {
+  outline: none;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-block {
+  display: block;
+  width: 100%;
 }
 </style>

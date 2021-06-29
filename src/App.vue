@@ -4,8 +4,7 @@
   <div v-show="showAddTask">
   <AddTask @add-task= "addTask"/>
   </div>
-  <Tasks :tasks = "tasks" @delete-task = "deleteTask" @toggle-reminder = "toggleReminder"/>
-  <!-- @delete-task = "deleteTask" -->
+  <Tasks :tasks = "tasks" @delete-task = "deleteTask" @toggle-reminder = "toggleReminder"/>  
   </div>
 </template>
 
@@ -27,11 +26,9 @@ export default {
     }    
   },
   methods:{
-    deleteTask (id){
-      // console.log("task", id)
+    deleteTask (id){     
       this.tasks = this.tasks.filter(task=>task.id !== id)
     },
-    //  debugger
     toggleReminder(id){       
       this.tasks = this.tasks.map(task=>{
         if(task.id === id){      
@@ -50,7 +47,7 @@ export default {
       this.showAddTask=!this.showAddTask
     }
   },
-  created() {
+  created() {    
       this.tasks = [
         {
          id : 1,
@@ -69,6 +66,13 @@ export default {
          text : 'Grocery Shopping',
          day: 'july 12th at 6.30pm',
          reminder: true,
+        },
+        {
+           id: 4,
+         text: "Collect the package from Føtex",
+         day: 'july 22nd at 2.30pm',
+         reminder: false,
+
         }
       ]
     }
@@ -84,13 +88,16 @@ export default {
 }
 body {
   font-family: 'Poppins', sans-serif;
+  text-align: center;  
+  background-image: url(https://miro.medium.com/max/2625/1*E7ELZyrme5bsu3m3QeiAzw.jpeg);
+  background-repeat: no-repeat;  
 }
 .container {
   max-width: 500px;
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
-  border: 1px solid steelblue;
+  /* border: 1px solid steelblue; */
   padding: 30px;
   border-radius: 5px;
 }
